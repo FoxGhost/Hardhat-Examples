@@ -1,13 +1,15 @@
-// src/chains.ts
+// customChains.ts
 import { defineChain } from "viem";
-import { configVariable } from "hardhat/config";
 
 export const linksChain = defineChain({
   id: 1074,
   name: "links",
   nativeCurrency: { name: "LINKS", symbol: "LINKS", decimals: 18 },
-  // opzionale: utile come documentazione
-  rpcUrls: { default: { http: [process.env.LINKS_RPC_URL ?? ""] } },
+  rpcUrls: {
+    default: {
+      http: ['https://json-rpc.evm.stardust.linksfoundation.com/dtcb-chain'],
+    },
+  },
   blockExplorers: {
     default: {
       name: "Blockscout-LINKS",
