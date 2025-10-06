@@ -1,9 +1,18 @@
 import hre, { network } from "hardhat";
 import { linksChain } from "../customChains.js";
 import {BaseError, ContractFunctionRevertedError, parseEventLogs} from "viem";
+import dotenv from "dotenv";
+dotenv.config();
 
 async function main() {
     const { viem } = await network.connect(); // connection to the network declared with `--network` available in `hardhat.config.ts`
+    const contractAddress = process.env.CONTRACT_ADDRESS as `0x${string}`;
+
+    if (contractAddress === undefined) {
+        throw new Error("CONTRACT_ADDRESS not defined");
+    } else {
+        console.log("CONTRACT_ADDRESS:", contractAddress);
+    }
 
     console.log(hre.globalOptions.network) //this is the value declared with `--network`
     let publicClient
@@ -37,7 +46,7 @@ async function main() {
         [wallet] = await viem.getWalletClients({ chain: linksChain });
         contract = await viem.getContractAt(
             "FoxGhostToken",
-            "0xEed2586f340344351173970A0d02E55d9E8F3335",
+            contractAddress,
             { client: { public: publicClient, wallet } }
         );
     }
@@ -46,7 +55,7 @@ async function main() {
         [wallet] = await viem.getWalletClients();
         contract = await viem.getContractAt(
             "FoxGhostToken",
-            "0xEed2586f340344351173970A0d02E55d9E8F3335"
+            contractAddress
         );
     }
     /* Print client connection details

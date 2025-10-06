@@ -1,11 +1,16 @@
-import { linksChain } from "../customChains";
+import { linksChain } from "../customChains.js";
 import {createPublicClient, createWalletClient, http} from 'viem'
 import {privateKeyToAccount} from "viem/accounts";
 import dotenv from "dotenv";
 dotenv.config();
-const PRIVATE_KEY = process.env.PRIVATE_KEY;
+const PRIVATE_KEY = process.env.PRIVATE_KEY as `0x${string}`;
 console.log(process.env.HARDHAT_NETWORK)
 
+
+if (PRIVATE_KEY === undefined) {
+  console.error("PRIVATE_KEY is not defined");
+  throw new Error("PRIVATE_KEY is not defined");
+}
 
 const account = privateKeyToAccount(PRIVATE_KEY)
 //console.log(account)
@@ -24,20 +29,16 @@ const walletClient = createWalletClient({account, chain: linksChain, transport: 
 
 console.log("Sending 1 wei from", walletClient.account.address, "to itself");
 
-let l1Gas;
-if ('estimateL1Gas' in publicClient) {
-  l1Gas = await publicClient.estimateL1Gas({
+const l1Gas = await publicClient.estimateGas({
     account: walletClient.account.address,
     to: walletClient.account.address,
     value: 1n,
   });
-  console.log("Gas L1 stimato:", l1Gas);
-}
 
 
-console.log("Estimated L1 gas:", l1Gas);
+console.log("Estimated gas:", l1Gas);
 
-console.log("Sending L2 transaction");
+console.log("Sending transaction");
 const tx = await walletClient.sendTransaction({
   to: walletClient.account.address,
   value: 1n,
