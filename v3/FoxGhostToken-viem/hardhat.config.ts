@@ -2,7 +2,22 @@ import type { HardhatUserConfig } from "hardhat/config";
 
 import hardhatToolboxViemPlugin from "@nomicfoundation/hardhat-toolbox-viem";
 import { configVariable } from "hardhat/config";
- 
+import dotenv from "dotenv";
+dotenv.config();
+
+
+const PRIVATE_KEY = process.env.PRIVATE_KEY;
+const API_URL = process.env.API_URL;
+
+if (PRIVATE_KEY === undefined) {
+  console.error("PRIVATE_KEY is not defined");
+  throw new Error("PRIVATE_KEY is not defined");
+}
+
+if (API_URL === undefined) {
+  console.error("API_URL is not defined");
+  throw new Error("API_URL is not defined");
+}
 
 const config: HardhatUserConfig = {
   plugins: [hardhatToolboxViemPlugin],
@@ -34,15 +49,22 @@ const config: HardhatUserConfig = {
     sepolia: {
       type: "http",
       chainType: "l1",
-      url: configVariable("SEPOLIA_RPC_URL"),
-      accounts: [configVariable("PRIVATE_KEY")],
+      url: API_URL, // with hardhat keystore: configVariable("SEPOLIA_RPC_URL"), it requires a password for every run
+      accounts: [PRIVATE_KEY],
     },
     links: {
       type: "http",
       chainType: "op",
-      url: configVariable("LINKS_RPC_URL"),
-      accounts: [configVariable("PRIVATE_KEY")],
+      url: "https://json-rpc.evm.stardust.linksfoundation.com/dtcb-chain",
+      accounts: [PRIVATE_KEY],
       chainId: 1074,
+    },
+    iota: {
+      type: "http",
+      chainType: "op",
+      url: "https://json-rpc.evm.testnet.iota.cafe",
+      chainId: 1076,
+      accounts: [PRIVATE_KEY],
     },
   },
 
