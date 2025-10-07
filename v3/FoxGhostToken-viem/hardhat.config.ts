@@ -1,7 +1,7 @@
 import type { HardhatUserConfig } from "hardhat/config";
 
 import hardhatToolboxViemPlugin from "@nomicfoundation/hardhat-toolbox-viem";
-import { configVariable } from "hardhat/config";
+//import { configVariable } from "hardhat/config";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -19,22 +19,18 @@ if (API_URL === undefined) {
   throw new Error("API_URL is not defined");
 }
 
+const isCoverage = process.env.COVERAGE === "true";
+
 const config: HardhatUserConfig = {
   plugins: [hardhatToolboxViemPlugin],
   solidity: {
-    profiles: {
-      default: {
-        version: "0.8.30",
+    version: isCoverage ? "0.8.20" : "0.8.30",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200,
       },
-      production: {
-        version: "0.8.30",
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 200,
-          },
-        },
-      },
+      viaIR: true
     },
   },
   networks: {

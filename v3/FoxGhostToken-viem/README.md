@@ -6,12 +6,13 @@ To learn more about the Hardhat 3 Beta, please visit the [Getting Started guide]
 
 ## Project Overview
 
-This example uses a ERC-20 and some basic operations on it:
+This example uses an ERC-20 and some basic operations on it:
 
-- Deploy through Ignite module ✅.
-- Foundry-compatible Solidity unit tests 🔜.
-- TypeScript integration tests using [`node:test`](nodejs.org/api/test.html), the new Node.js native test runner, and [`viem`](https://viem.sh/) ✅, not with fixtures 🔜.
-- Examples demonstrating how to connect to different types of networks, including locally simulating OP mainnet. It works only with viem know networks ❌.
+- A Hardhat configuration file.✅
+- Deploy through Ignite module.✅
+- Foundry-compatible Solidity unit tests.🔜
+- TypeScript integration tests using [`node:test`](https://nodejs.org/api/test.html), the new Node.js native test runner, and [`viem`](https://viem.sh/).✅
+- Examples demonstrating how to connect to different types of networks, including locally simulating OP mainnet, and a custom network.✅
 
 ## Usage
 
@@ -29,6 +30,15 @@ You can also selectively run the Solidity or `node:test` tests:
 npx hardhat test solidity
 npx hardhat test nodejs
 ```
+
+### Running Tests with Coverage
+To run tests with the coverage analysis, run the command:
+
+```shell
+COVERAGE=true npx hardhat test --coverage 
+```
+This will recompile the contract with a previous version of Solidity,
+but that is compatible with the solidity-coverage plugin.
 
 ### Make a deployment to Sepolia
 
