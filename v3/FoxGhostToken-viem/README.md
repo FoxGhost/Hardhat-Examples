@@ -15,6 +15,10 @@ This example uses an ERC-20 and some basic operations on it:
 - Examples demonstrating how to connect to different types of networks, including locally simulating OP mainnet, and a custom network.✅
 
 ## Usage
+## Gas Estimation
+```shell
+npx hardhat run scripts/estimateGas.ts --network <network-name>
+```
 
 ### Running Tests
 
